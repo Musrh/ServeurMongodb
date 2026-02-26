@@ -7,12 +7,12 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔹 Connexion MongoDB
-mongoose.connect("mongodb://127.0.0.1:27017/testdb")
+// 🔥 Connexion MongoDB Railway
+mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB connecté"))
   .catch(err => console.log(err));
 
-// 🔹 Schema
+// Schema
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String
@@ -20,19 +20,22 @@ const UserSchema = new mongoose.Schema({
 
 const User = mongoose.model("User", UserSchema);
 
-// 🔹 Routes
+// Routes
+app.get("/", (req, res) => {
+  res.send("API Railway fonctionne 🚀");
+});
 
-// Ajouter utilisateur
+app.get("/users", async (req, res) => {
+  const users = await User.find();
+  res.json(users);
+});
+
 app.post("/users", async (req, res) => {
   const user = new User(req.body);
   await user.save();
   res.json(user);
 });
 
-// Récupérer utilisateurs
-app.get("/users", async (req, res) => {
-  const users = await User.find();
-  res.json(users);
-});
-
-app.listen(3000, () => console.log("Serveur lancé sur port 3000"));
+// 🔥 PORT Railway obligatoire
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log("Serveur lancé sur port " + PORT));
