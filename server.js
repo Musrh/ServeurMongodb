@@ -3,11 +3,11 @@ const app = express();
 
 // Route test
 app.get("/", (req, res) => {
-  res.send("API Railway fonctionne 🚀");
+  res.send("🚀 Server Railway minimal fonctionne !");
 });
 
-// ⚠️ PORT dynamique pour Railway
+// PORT dynamique fourni par Railway
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("Serveur lancé sur port", PORT);
+  console.log("Serveur lancé sur le port", PORT);
 });
