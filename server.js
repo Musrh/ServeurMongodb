@@ -7,12 +7,10 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// 🔥 Connexion MongoDB Railway
 mongoose.connect(process.env.MONGO_URL)
   .then(() => console.log("MongoDB connecté"))
   .catch(err => console.log(err));
 
-// Schema
 const UserSchema = new mongoose.Schema({
   name: String,
   email: String
@@ -26,7 +24,7 @@ app.get("/", (req, res) => {
 });
 
 app.get("/users", async (req, res) => {
-  const users = await User.find();
+  const users = await User.find();  // <-- ici ça peut planter si MongoDB n'a pas encore de collection
   res.json(users);
 });
 
@@ -36,6 +34,5 @@ app.post("/users", async (req, res) => {
   res.json(user);
 });
 
-// 🔥 PORT Railway obligatoire
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log("Serveur lancé sur port " + PORT));
